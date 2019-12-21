@@ -1,22 +1,30 @@
 
-<div class="navbar navbar-default navbar-fixed-top" id="main-nav">
-    <div class="container desktop">
-        <div class="navbar-header">
-            <a href="{% url 'posts' %}" class="navbar-brand">Jiuzhang Insta</a>
+<nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#Insta-navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        
+        <a class="navbar-brand" href="{% url 'posts' %}">Insta Demo</a>
         </div>
+        
+        <div class="collapse navbar-collapse" aria-expanded="false" id="Insta-navbar-collapse">
 
-        <div id="navbar-main">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" aria-expanded="false">
                 {% if request.user.is_authenticated %}
                     <li>
-                      <a href="{% url 'posts' %}">
+                    <a href="{% url 'posts' %}">
                         <i class="fa fa-home active" aria-hidden="true"></i>
-                      </a>
+                    </a>
                     </li>
-                    <li><a href="{% url 'helloworld' %}"><i class="fa fa-search" aria-hidden="true"></i></a></li>
-                    <li><a href="{% url 'make_post' %}"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
-                    <li><a href="{% url 'user_detail' user.id %}"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-                    <li><a href="{% url 'login' %}"><i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'user_search' %}">Search User <i class="fa fa-search" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'make_post' %}">Make Post <i class="fa fa-plus" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'user_detail' user.id %}">User Page <i class="fa fa-user" aria-hidden="true"></i></a></li>
+                    <li><a href="{% url 'login' %}">Sign Out <i class="fa fa-sign-out" aria-hidden="true"></i></a></li>
                 {% else %}
                     <li>
                         <a href="{% url 'login' %}">login</a>
@@ -26,6 +34,9 @@
                     </li>
                 {% endif %}
             </ul>
-        </div>
+            <div class="navbar-brand">        
+                Hello {{request.user}}
+            </div>
+        </div><!-- /.container-fluid -->
     </div>
-</div>
+</nav> 

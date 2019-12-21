@@ -2,9 +2,10 @@ from annoying.decorators import ajax_request
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse, reverse_lazy
-from Insta.models import Post, Like, InstaUser, UserConnection
+from Insta.models import Post, Like, InstaUser, UserConnection, Comment
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 from Insta.forms import CustomUserCreationForm
 
@@ -47,10 +48,56 @@ class UserDetailView(DetailView):
     model = InstaUser
     template_name = 'user_detail.html'
 
+class UserUpdateView(UpdateView):
+    model = InstaUser
+    template_name = 'user_update.html'
+    fields = ['profile_pic']
+
+class ProfileSearchView(TemplateView):
+    model = InstaUser
+    template_name = 'user_search.html'
+
+class ProfileSearchResultView(ListView):
+    model = InstaUser
+    template_name = 'user_search_result.html'
+
+    def get_queryset(self): # new
+        query = self.request.GET.get('q')
+        object_list = InstaUser.objects.filter(
+            Q(username__icontains=query)
+        )
+        return object_list
+
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'signup.html'
     success_url = reverse_lazy('login')
+
+@ajax_request
+def toggleFollow(request):
+    current_user = InstaUser.objects.get(pk=request.user.pk)
+    follow_user_pk = request.POST.get('follow_user_pk')
+    follow_user = InstaUser.objects.get(pk=follow_user_pk)
+
+    try:
+        if current_user != follow_user:
+            if request.POST.get('type') == 'follow':
+                connection = UserConnection(creator=current_user, following=follow_user)
+                connection.save()
+            elif request.POST.get('type') == 'unfollow':
+                UserConnection.objects.filter(creator=current_user, following=follow_user).delete()
+            result = 1
+        else:
+            result = 0
+    except Exception as e:
+        print(e)
+        result = 0
+
+    return {
+        'result': result,
+        'type': request.POST.get('type'),
+        'follow_user_pk': follow_user_pk
+    }
 
 @ajax_request
 def addLike(request):
@@ -68,4 +115,33 @@ def addLike(request):
     return {
         'result': result,
         'post_pk': post_pk
+    }
+
+@ajax_request
+def addComment(request):
+    comment_text = request.POST.get('comment_text')
+    post_pk = request.POST.get('post_pk')
+    post = Post.objects.get(pk=post_pk)
+    commenter_info = {}
+
+    try:
+        comment = Comment(comment=comment_text, user=request.user, post=post)
+        comment.save()
+
+        username = request.user.username
+
+        commenter_info = {
+            'username': username,
+            'comment_text': comment_text
+        }
+
+        result = 1
+    except Exception as e:
+        print(e)
+        result = 0
+
+    return {
+        'result': result,
+        'post_pk': post_pk,
+        'commenter_info': commenter_info
     }

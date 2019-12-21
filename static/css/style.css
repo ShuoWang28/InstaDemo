@@ -279,11 +279,17 @@ a:hover {
   .card__panel-body {
     padding: 20px;
     padding-bottom: 0; }
+    .card__panel-body .title {
+      padding-top: 10px;
+      padding-bottom: 20px;
+      font-family:"Times New Roman", Times, serif;
+      font-size: 15px;
+    }
     .card__panel-body a {
       color: #333; }
     .card__panel-body .likes {
       font-weight: bold;
-      margin-bottom: 5px; }
+      margin-bottom: 0px; }
     .card__panel-body .view-more {
       color: #333; }
       .card__panel-body .view-more:hover {
@@ -371,6 +377,19 @@ a:hover {
     .single-post-card .header a {
       color: #262626;
       font-weight: bold; }
+      .single-post-card .title {
+        position: absolute;
+        top: 20%;
+        right: 0;
+        width: 335px;
+        padding: 0 24px;
+        flex-direction: column;
+        font-size: 18px;
+        font-family:"Times New Roman", Times, serif;
+      }
+       .single-post-card .image__wrapper {
+         min-height: 400px;
+       }
   .single-post-card .comments-portion {
     position: absolute;
     bottom: 0;
@@ -389,23 +408,33 @@ a:hover {
         right: 0;
         padding: 18px 20px;
         border: none; } }
+        .single-post-card .edit-post {
+           right: 0;
+        }
 
 .input-row {
   position: relative;
   display: flex;
   align-items: center;
-  height: 68px;
+  height: 58px;
   padding-left: 40px; }
-  .input-row .submit-like {
+  .submit-like {
     cursor: pointer;
     position: absolute;
     top: 32%;
     left: 0;
     color: #C2C2C2;
     font-size: 24px; }
-    .input-row .submit-like:hover {
+    .input-row-like {
+      margin-bottom: 5px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 40px;
+    }
+    .submit-like:hover {
       cursor: pointer; }
-    .input-row .submit-like.fa-heart {
+    .submit-like.fa-heart {
       color: #ED4956; }
   .input-row .comment-input-wrapper {
     display: inline-block;
@@ -460,13 +489,14 @@ a:hover {
       margin-right: 11px;
       font-size: 16px;
       font-weight: 600;
-      color: #999;
+      color: rgb(19, 5, 82);
       border: 1px solid #999;
       border-radius: 3px;
       padding: 0 11px;
       line-height: 28px;
       background-color: #fafafa; }
       .profile__head .edit-profile:hover {
+        color: rgb(15, 145, 185);
         text-decoration: none;
         cursor: pointer; }
     .profile__head .options-bubbles p {

@@ -16,7 +16,7 @@ function create_like(success_cb, error_cb) {
 
     $.ajax({
         type: "POST",
-        url: '/insta/like/',
+        url: '/like/',
         data: {
             post_pk: post_pk
         },
@@ -79,13 +79,13 @@ function validComment(text) {
   
 function create_comment(success_cb, error_cb) {
     var comment_text = $(this).val();
-    var post_pk = $(this).parent().siblings('.hidden-data').find('.post-pk').text();
-  
+    var post_pk = $(this).parent().siblings('.hidden-data-2').find('.post-pk').text();
+
     console.log(comment_text, post_pk);
   
     $.ajax({
       type: "POST",
-      url: '/comment',
+      url: '/comment/',
       data: {
         comment_text: comment_text,
         post_pk: post_pk
@@ -97,14 +97,14 @@ function create_comment(success_cb, error_cb) {
 
 function comment_update_view(data) {
     console.log(data);
-    var $post = $('.hidden-data.' + data.post_pk);
+    var $post = $('.hidden-data-2.' + data.post_pk);
     var commentHTML = '<li class="comment-list__comment"><a class="user"> ' + data.commenter_info.username + '</a> <span class="comment">'
                     + data.commenter_info.comment_text +'</span></li>'
-  
     $post.closest('.view-update').find('.comment-list').append(commentHTML);
   }
   
   $('.add-comment').on('keyup', function(e) {
+    console.log("check")
     if (enterPressed(e)) {
       if (validComment($(this).val())) {
         create_comment.call(this, comment_update_view, error_cb);
@@ -126,7 +126,7 @@ function follow_user(success_cb, error_cb, type) {
   
     $.ajax({
       type: "POST",
-      url: '/togglefollow',
+      url: '/togglefollow/',
       data: {
         follow_user_pk: follow_user_pk,
         type: type
@@ -161,10 +161,12 @@ function update_unfollow_view(data) {
 }
 
 
-// $('.follow-toggle__container').on('click', '.follow-user', function() {
-//     follow_user.call(this, update_follow_view, error_cb, 'follow');
-// });
+$('.follow-toggle__container').on('click', '.follow-user', function() {
+    console.log("follow_test");
+    follow_user.call(this, update_follow_view, error_cb, 'follow');
+});
 
-// $('.follow-toggle__container').on('click', '.unfollow-user', function() {
-//     follow_user.call(this, update_unfollow_view, error_cb, 'unfollow');
-// });
+$('.follow-toggle__container').on('click', '.unfollow-user', function() {
+    console.log("unfollow_test");
+    follow_user.call(this, update_unfollow_view, error_cb, 'unfollow');
+});

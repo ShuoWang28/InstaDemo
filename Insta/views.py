@@ -12,9 +12,10 @@ from Insta.forms import CustomUserCreationForm
 class HelloWorld(TemplateView):
     template_name = 'test.html'
 
-class PostView(ListView): 
+class PostView(LoginRequiredMixin, ListView): 
     model = Post
     template_name = 'index.html'
+    login_url = 'login'
     
     def get_queryset(self):
         current_user = self.request.user
